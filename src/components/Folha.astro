@@ -1,0 +1,30 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import { cadernos } from '../catalogo';
+interface Props {
+  atividade: CollectionEntry<'atividades'>;
+  noCaderno?: boolean;
+}
+const { atividade, noCaderno = false } = Astro.props;
+const { data, id } = atividade;
+const { Content } = await render(atividade);
+const Titulo = noCaderno ? 'h2' : 'h1';
+---
+<article class="folha" aria-labelledby={id}>
+  <header>
+    <p class="etiqueta">{cadernos[data.caderno].titulo} · Atividade {data.ordem}</p>
+    <Titulo id={id}>{data.titulo}</Titulo>
+    <p class="habilidade"><strong>Habilidade</strong> · {data.habilidade}</p>
+  </header>
+  <section class="exercicio" aria-label="Exercício">
+    <p><strong>{data.crianca}</strong></p>
+    <Content />
+  </section>
+  <aside class="adulto" aria-label="Orientação ao adulto">
+    <p><strong>Para quem acompanha</strong></p>
+    <p>{data.adulto}</p>
+    {data.respostas && <details class="respostas-tela"><summary>Ver respostas</summary><p>{data.respostas}</p></details>}
+    {data.respostas && !noCaderno && <p class="so-impressao"><strong>Respostas.</strong> {data.respostas}</p>}
+  </aside>
+  <p class="credito">Meu Primeiro Caderninho · Giordane Oliveira · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
+</article>

@@ -1,0 +1,12 @@
+---
+import { cadernos, cadernosIds, endereco } from '../catalogo';
+---
+<ul class="grade">
+  {cadernosIds.map(id => {
+    const { titulo, descricao, tema } = cadernos[id];
+    return <li class:list={['cartao', tema]}>
+      <h3><a href={endereco('caderninhos/' + id + '/')}>{titulo}</a></h3>
+      <p>{descricao}</p>
+    </li>;
+  })}
+</ul>

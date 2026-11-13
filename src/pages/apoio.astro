@@ -1,0 +1,18 @@
+---
+import Site from '../layouts/Site.astro';
+import { endereco, repositorio } from '../catalogo';
+---
+<Site titulo="Apoie o Meu Primeiro Caderninho" descricao="Colabore com a revisão das atividades, compartilhe os caderninhos ou ajude a imprimir e manter o site.">
+  <h1>Ajude mais crianças brasileiras a praticar a leitura</h1>
+  <p><strong>Precisamos de ajuda humana e de tokens para tocar o projeto.</strong> Você pode contribuir com seu tempo, e empresas podem oferecer créditos de API ou cotas de ferramentas de desenvolvimento.</p>
+  <ul class="lista">
+    <li><strong>Revise uma atividade.</strong> Educadores e famílias podem apontar instruções confusas ou sugerir palavras e exercícios. A revisão pedagógica está aberta a contribuições.</li>
+    <li><strong>Compartilhe os caderninhos.</strong> Envie o <a href={endereco('caderninhos/')}>link dos PDFs</a> a famílias, escolas e bibliotecas.</li>
+    <li><strong>Imprima para distribuir.</strong> Organize cópias em preto e branco para sua turma, biblioteca ou comunidade e mantenha os créditos.</li>
+    <li><strong>Ajude a manter o site.</strong> Melhore a leitura no celular, a impressão ou a acessibilidade.</li>
+  </ul>
+  <h2>Apoio de empresas</h2>
+  <p>Empresas podem oferecer horas de voluntariado, créditos e tokens de ferramentas, impressão e distribuição local ou divulgação. Descreva a proposta em uma issue e combine a concessão dos créditos pelo canal oficial do fornecedor.</p>
+  <p><a href={repositorio + '/issues'}>Abra uma issue</a> para sugerir uma mudança ou propor apoio. Se a contribuição estiver pronta, <a href={repositorio + '/pulls'}>envie um pull request</a>.</p>
+  <p>Para contato direto, propostas de parceria, doações ou presentes para o projeto, escreva para <a href="mailto:devgiordane.mpc@gmail.com">devgiordane.mpc@gmail.com</a>.</p>
+</Site>

@@ -1,0 +1,7 @@
+<button type="button" class="botao" data-imprimir hidden>Imprimir</button>
+<script>
+  for (const botao of document.querySelectorAll<HTMLButtonElement>('[data-imprimir]')) {
+    botao.hidden = false;
+    botao.addEventListener('click', () => window.print());
+  }
+</script>

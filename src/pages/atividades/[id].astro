@@ -1,0 +1,31 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Site from '../../layouts/Site.astro';
+import Folha from '../../components/Folha.astro';
+import Imprimir from '../../components/Imprimir.astro';
+import { lerAtividades } from '../../atividades';
+import { cadernos, endereco } from '../../catalogo';
+
+export const getStaticPaths = (async () => {
+  const atividades = await lerAtividades();
+  return atividades.map((atividade, i) => {
+    const candidata = atividades[i + 1];
+    const proxima = candidata?.data.caderno === atividade.data.caderno ? candidata : undefined;
+    return { params: { id: atividade.id }, props: { atividade, proxima } };
+  });
+}) satisfies GetStaticPaths;
+
+const { atividade, proxima } = Astro.props;
+const { titulo, descricao, caderno } = atividade.data;
+const cadernoUrl = endereco('caderninhos/' + caderno + '/');
+---
+<Site titulo={titulo + ' | Meu Primeiro Caderninho'} descricao={descricao}>
+  <div class="acoes"><a href={cadernoUrl}>← {cadernos[caderno].titulo}</a><Imprimir /></div>
+  <Folha atividade={atividade} />
+  <nav class="acoes" aria-label="Continuar praticando">
+    <a href={endereco('atividades/')}>Todas as atividades</a>
+    {proxima
+      ? <a href={endereco('atividades/' + proxima.id + '/')}>Próxima atividade · {proxima.data.titulo} →</a>
+      : <a href={endereco('caderninhos/')}>Escolher outro caderninho →</a>}
+  </nav>
+</Site>

@@ -1,0 +1,43 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Site from '../../layouts/Site.astro';
+import Folha from '../../components/Folha.astro';
+import Imprimir from '../../components/Imprimir.astro';
+import { lerAtividades } from '../../atividades';
+import { cadernos, cadernosIds, endereco } from '../../catalogo';
+
+export const getStaticPaths = (async () => {
+  const atividades = await lerAtividades();
+  return cadernosIds.map(id => ({
+    params: { id },
+    props: { caderno: cadernos[id], atividades: atividades.filter(({ data }) => data.caderno === id) },
+  }));
+}) satisfies GetStaticPaths;
+
+const { caderno, atividades } = Astro.props;
+const id = Astro.params.id;
+const titulo = 'Atividades de ' + caderno.titulo.toLocaleLowerCase('pt-BR') + ' para imprimir';
+const respostas = atividades.filter(({ data }) => data.respostas);
+---
+<Site titulo={titulo + ' | Meu Primeiro Caderninho'} descricao={caderno.descricao + ' Leia, imprima em A4 ou baixe o caderninho em PDF.'}>
+  <header class="capa-tela">
+    <h1>{titulo}</h1>
+    <p>{caderno.descricao}</p>
+    <div class="acoes">
+      <a class="botao" href={endereco('caderninhos/' + id + '.pdf')} download>Baixar PDF</a>
+      <Imprimir />
+    </div>
+    <h2>Exercícios deste caderninho</h2>
+    <ol class="lista">
+      {atividades.map(({ id, data }) => <li><a href={endereco('atividades/' + id + '/')}>{data.titulo}</a></li>)}
+    </ol>
+  </header>
+  {atividades.map(atividade => <Folha atividade={atividade} noCaderno />)}
+  {respostas.length > 0 && <section class="gabarito so-impressao" aria-label="Gabarito">
+    <h2>Gabarito · {caderno.titulo}</h2>
+    <ol class="lista">
+      {respostas.map(({ data }) => <li value={data.ordem}><strong>{data.titulo}.</strong> {data.respostas}</li>)}
+    </ol>
+    <p class="credito">Meu Primeiro Caderninho · Giordane Oliveira · CC BY 4.0</p>
+  </section>}
+</Site>

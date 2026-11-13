@@ -1,0 +1,8 @@
+---
+import Site from '../layouts/Site.astro';
+import { endereco } from '../catalogo';
+---
+<Site titulo="Página não encontrada | Meu Primeiro Caderninho" descricao="Volte ao início ou escolha uma atividade de alfabetização." indexavel={false}>
+  <h1>Página não encontrada</h1>
+  <p><a href={endereco()}>Voltar ao início</a> ou <a href={endereco('atividades/')}>escolher uma atividade</a>.</p>
+</Site>

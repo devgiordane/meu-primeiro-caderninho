@@ -1,0 +1,18 @@
+---
+import Site from '../../layouts/Site.astro';
+import { lerAtividades } from '../../atividades';
+import { cadernos, cadernosIds, endereco } from '../../catalogo';
+const atividades = await lerAtividades();
+---
+<Site titulo="Atividades de alfabetização | Meu Primeiro Caderninho" descricao="Escolha um exercício de letras e sons, sílabas simples ou primeiras palavras para fazer no caderno ou imprimir.">
+  <h1>Atividades de alfabetização</h1>
+  <p>Escolha uma atividade curta para fazer com lápis e papel.</p>
+  {cadernosIds.map(id => <section aria-labelledby={id}>
+    <h2 id={id}>{cadernos[id].titulo}</h2>
+    <ol class="lista">
+      {atividades.filter(({ data }) => data.caderno === id).map(({ id, data }) => (
+        <li><a href={endereco('atividades/' + id + '/')}>{data.titulo}</a> · {data.descricao}</li>
+      ))}
+    </ol>
+  </section>)}
+</Site>

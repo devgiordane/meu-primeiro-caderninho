@@ -1,0 +1,51 @@
+name: GitHub Pages
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm run build
+      - name: Verificar PDFs
+        run: |
+          for caderno in letras-e-sons silabas-simples primeiras-palavras; do
+            test "$(head -c 5 "dist/caderninhos/$caderno.pdf")" = "%PDF-" || exit 1
+          done
+      - uses: actions/upload-pages-artifact@v4
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        with:
+          path: dist
+
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    concurrency:
+      group: github-pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.publicacao.outputs.page_url }}
+    steps:
+      - id: publicacao
+        uses: actions/deploy-pages@v4

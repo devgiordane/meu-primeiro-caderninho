@@ -1,0 +1,43 @@
+---
+import { endereco, repositorio } from '../catalogo';
+import '../styles/site.css';
+
+interface Props {
+  titulo: string;
+  descricao: string;
+  indexavel?: boolean;
+}
+const { titulo, descricao, indexavel = true } = Astro.props;
+const canonica = new URL(Astro.url.pathname, Astro.site);
+const secoes = [['Atividades', 'atividades/'], ['Caderninhos', 'caderninhos/'], ['Apoie', 'apoio/']];
+---
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content={descricao}>
+    {indexavel ? <link rel="canonical" href={canonica}> : <meta name="robots" content="noindex">}
+    <title>{titulo}</title>
+  </head>
+  <body>
+    <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+    <header class="topo">
+      <div class="limite barra">
+        <a class="marca" href={endereco()}>Meu Primeiro Caderninho</a>
+        <nav aria-label="Menu principal">
+          {secoes.map(([rotulo, caminho]) => (
+            <a href={endereco(caminho)} aria-current={Astro.url.pathname === endereco(caminho) ? 'page' : undefined}>{rotulo}</a>
+          ))}
+        </nav>
+      </div>
+    </header>
+    <main id="conteudo" class="limite" tabindex="-1"><slot /></main>
+    <footer class="rodape">
+      <div class="limite barra">
+        <span>Meu Primeiro Caderninho</span>
+        <a href={repositorio}>Código e conteúdo no GitHub</a>
+      </div>
+    </footer>
+  </body>
+</html>

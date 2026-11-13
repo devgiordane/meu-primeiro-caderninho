@@ -1,0 +1,23 @@
+---
+import Site from '../layouts/Site.astro';
+import Cadernos from '../components/Cadernos.astro';
+import { endereco } from '../catalogo';
+---
+<Site titulo="Meu Primeiro Caderninho | Atividades gratuitas de alfabetização" descricao="Atividades gratuitas de alfabetização em português do Brasil para fazer no caderno, imprimir ou baixar em PDF.">
+  <section class="hero">
+    <h1>Um lápis e as últimas folhas de um caderno já dão pra começar.</h1>
+    <p>Atividades gratuitas de alfabetização para praticar a leitura em casa. Abra no celular, copie no caderno ou imprima.</p>
+    <div class="acoes">
+      <a class="botao" href={endereco('atividades/')}>Ver atividades</a>
+      <a href={endereco('caderninhos/')}>Ver caderninhos em PDF</a>
+    </div>
+    <picture class="capa-ilustrada">
+      <source media="(prefers-reduced-motion: no-preference)" srcset={endereco('visuais/capa.gif')}>
+      <img src={endereco('visuais/capa.png')} alt="" width="840" height="320" decoding="async">
+    </picture>
+  </section>
+  <section aria-labelledby="cadernos">
+    <h2 id="cadernos">Escolha um caderninho</h2>
+    <Cadernos />
+  </section>
+</Site>
